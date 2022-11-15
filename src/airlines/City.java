@@ -1,6 +1,6 @@
 package airlines;
 
-protected class City {
+public class City {
 
     // City Data
     private String name;
@@ -12,7 +12,7 @@ protected class City {
     private City adjacentCity;
 
     // Constructors
-    protected City(String name) {
+    public City(String name) {
 
         this.name = name;
         this.flightTime = 0;
@@ -23,7 +23,7 @@ protected class City {
 
     }
 
-    protected City(String name, int flightTime, double flightCost) {
+    public City(String name, int flightTime, double flightCost) {
 
         this.name = name;
         this.flightTime = flightTime;
@@ -35,19 +35,19 @@ protected class City {
     }
 
     // Getters
-    protected String getName() {return name;}
-    protected int getFlightTime() {return flightTime;}
-    protected double getFlightCost() {return flightCost;}
+    public String getName() {return name;}
+    public int getFlightTime() {return flightTime;}
+    public double getFlightCost() {return flightCost;}
 
-    protected City getNextCity() {return nextCity;}
-    protected City getAdjacentCity() {return adjacentCity;}
+    public City getNextCity() {return nextCity;}
+    public City getAdjacentCity() {return adjacentCity;}
 
     // Setters
-    protected void setName(String name) {this.name = name;}
-    protected void setFlightTime(int flightTime) {this.flightTime = flightTime;}
-    protected void setFlightCost(double flightCost) {this.flightCost = flightCost;}
+    public void setName(String name) {this.name = name;}
+    public void setFlightTime(int flightTime) {this.flightTime = flightTime;}
+    public void setFlightCost(double flightCost) {this.flightCost = flightCost;}
 
-    protected void setNextCity(City nextCity) {this.nextCity = nextCity;}
-    protected void setAdjacentCity(City adjacentCity) {this.adjacentCity = adjacentCity;}
+    public void setNextCity(City nextCity) {this.nextCity = nextCity;}
+    public void setAdjacentCity(City adjacentCity) {this.adjacentCity = adjacentCity;}
 
 }

@@ -26,6 +26,14 @@ public class Routes {
         System.out.println("Adding " + name + " to the adjacency list...");
         City newCity = new City(name);
 
+        if (routes == null) {
+
+            routes = newCity;
+            System.out.println("Added " + name + " to the adjacency list.");
+            return true;
+
+        }
+
         // Traverse routes until end to add new city
         City head = routes;
         while (head.getNextCity() != null) {
@@ -74,6 +82,13 @@ public class Routes {
 
         // Head should be source city
         City adjacent = head.getAdjacentCity();
+        if (adjacent == null) {
+
+            head.setAdjacentCity(newCity);
+            System.out.println("Added route from " + source + " to " + destination + " to routes.");
+            return true;
+
+        }
 
         // Loop to end of adjacent cities to add route
         while (adjacent.getNextCity() != null) {
@@ -95,6 +110,51 @@ public class Routes {
         System.out.println("Added route from " + source + " to " + destination + " to routes.");
 
         return true;
+
+    }
+
+    // Finds
+
+    // Returns weither a city exist in the adjacency list
+    public boolean cityExist(String name) {
+
+        City head = routes;
+
+        while (head != null && head.getName() != name) {
+
+            head = head.getNextCity();
+
+        }
+
+        return head != null;
+
+    }
+
+    // Returns weither a route exist in the adjacency list
+    public boolean routeExist(String source, String destination) {
+
+        City head = routes;
+
+        while (head != null && head.getName() != source) {
+
+            head = head.getNextCity();
+
+        }
+
+        if (head == null) {
+
+            return false;
+
+        }
+
+        City adjacent = head.getAdjacentCity();
+        while (adjacent != null && adjacent.getName() != destination) {
+
+            adjacent = adjacent.getNextCity();
+
+        }
+
+        return adjacent != null;
 
     }
 
@@ -136,6 +196,7 @@ public class Routes {
                 while (adjacent != null) {
 
                     System.out.print(" -> " + adjacent.getName());
+                    adjacent = adjacent.getNextCity();
 
                 }
 
