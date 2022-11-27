@@ -132,7 +132,6 @@ public class Routes {
 
         Stack stack = new Stack();
         Stack currentRoute = new Stack();
-        int routeLength = 0;
         HashSet<String> visited = new HashSet<>();
 
         City start = new City(source, 0, 0);
@@ -141,51 +140,45 @@ public class Routes {
 
         while(!stack.isEmpty()) {
 
-            City currentCity = stack.pop();
-            currentCity.setNextCity(null);
+            City tmp = stack.peek();
+            City currentCity = new City(tmp.getName(), tmp.getFlightTime(), tmp.getFlightCost());
+            currentCity.setAdjacentCity(getAdjacent(currentCity.getName()));
 
             currentRoute.push(currentCity);
-            routeLength += 1;
+
+            // System.out.println("Stack " + stack);
+            // System.out.println("Path " + currentRoute);
 
             if (currentCity.getName().equals(destination)) {
 
                 System.out.println(currentRoute);
+                while (currentRoute.peek() != null && currentRoute.peek().getName().equals(stack.peek().getName())) {
 
-                for (int i = 1; i < routeLength; i++) {
-
+                    stack.pop();
                     currentRoute.pop();
 
                 }
-
-                routeLength = 1;
 
                 continue;
 
             }
 
-            if (!visited.contains(currentCity.getName())) {
-
-                System.out.println(" To " + currentCity.getName());
-                visited.add(currentCity.getName());
-
-            }
+            visited.add(currentCity.getName());
 
             City adjacent = getAdjacent(currentCity.getName());
             while (adjacent != null) {
 
                 if (!visited.contains(adjacent.getName())) {
 
-                    City tmp = new City(adjacent.getName(), adjacent.getFlightTime(), adjacent.getFlightCost());
-                    tmp.setAdjacentCity(getAdjacent(tmp.getName()));
-                    stack.push(tmp);
+                    City tmp2 = new City(adjacent.getName(), adjacent.getFlightTime(), adjacent.getFlightCost());
+                    tmp2.setAdjacentCity(getAdjacent(tmp2.getName()));
+                    stack.push(tmp2);
 
                 }
 
                 adjacent = adjacent.getNextCity();
 
             }
-
-            // System.out.println("Stack " + stack);
 
         }
 

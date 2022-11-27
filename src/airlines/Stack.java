@@ -50,6 +50,12 @@ public class Stack {
 
     }
 
+    public City peek() {
+
+        return top;
+
+    }
+
     public boolean isEmpty() {return top == null;}
 
     public String toString() {

@@ -4,3 +4,8 @@ Austin|Huston|100|30
 Austin|ElPaso|100|30
 Huston|Dallas|100|30
 ElPaso|Huston|100|30
+Huston|SanAntonio|100|30
+SanAntonio|Dallas|100|30
+Huston|RoundRock|100|30
+RoundRock|Fort|100|30
+Fort|Dallas|100|30
