@@ -1,4 +1,6 @@
 1
 Austin|Dallas|200|60
 Austin|Huston|100|30
+Austin|ElPaso|100|30
 Huston|Dallas|100|30
+ElPaso|Huston|100|30

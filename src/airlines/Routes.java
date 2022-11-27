@@ -131,6 +131,8 @@ public class Routes {
         }
 
         Stack stack = new Stack();
+        Stack currentRoute = new Stack();
+        int routeLength = 0;
         HashSet<String> visited = new HashSet<>();
 
         City start = new City(source, 0, 0);
@@ -139,37 +141,51 @@ public class Routes {
 
         while(!stack.isEmpty()) {
 
-            // Mark next city or pop up the stack
             City currentCity = stack.pop();
+            currentCity.setNextCity(null);
+
+            currentRoute.push(currentCity);
+            routeLength += 1;
+
             if (currentCity.getName().equals(destination)) {
 
-                System.out.println("Found route.");
+                System.out.println(currentRoute);
+
+                for (int i = 1; i < routeLength; i++) {
+
+                    currentRoute.pop();
+
+                }
+
+                routeLength = 1;
+
                 continue;
 
             }
 
-            if (visited.contains(currentCity.getName())) {
+            if (!visited.contains(currentCity.getName())) {
 
-                continue;
+                System.out.println(" To " + currentCity.getName());
+                visited.add(currentCity.getName());
 
             }
 
-            visited.add(currentCity.getName());
-
-            // Try all adjacent paths
-            City adjacent = currentCity.getAdjacentCity();
+            City adjacent = getAdjacent(currentCity.getName());
             while (adjacent != null) {
 
                 if (!visited.contains(adjacent.getName())) {
 
                     City tmp = new City(adjacent.getName(), adjacent.getFlightTime(), adjacent.getFlightCost());
-                    tmp.setAdjacentCity(getAdjacent(adjacent.getName()));
+                    tmp.setAdjacentCity(getAdjacent(tmp.getName()));
                     stack.push(tmp);
 
                 }
+
                 adjacent = adjacent.getNextCity();
 
             }
+
+            // System.out.println("Stack " + stack);
 
         }
 
@@ -238,13 +254,7 @@ public class Routes {
 
         }
 
-        if (head == null || !head.getName().equals(name)) {
-
-            return null;
-
-        }
-
-        return head;
+        return null;
 
     }
 
@@ -262,13 +272,7 @@ public class Routes {
 
         }
 
-        if (head == null || !head.getName().equals(name)) {
-
-            return null;
-
-        }
-
-        return head.getAdjacentCity();
+        return null;
 
     }
 
