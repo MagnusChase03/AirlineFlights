@@ -1,6 +1,10 @@
 package airlines;
 
 import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator
+import java.io.*;
 
 /*
 
@@ -117,7 +121,7 @@ public class Routes {
 
     // Backtracking
     // Returns weither the backtrack was successful or not
-    public boolean backtrack(String source, String destination) {
+    public boolean backtrack(String source, String destination, String outputPath) {
 
         spacer();
         System.out.println("Backtracking from " + source + " to " + destination + "...");
@@ -134,10 +138,14 @@ public class Routes {
         Stack currentRoute = new Stack();
         HashSet<String> visited = new HashSet<>();
 
+        HashMap<String, Double> flightTimes = new HashMap<>();
+        HashMap<String, Double> flightCosts = new HashMap<>();
+
         City start = new City(source, 0, 0);
         start.setAdjacentCity(getAdjacent(source));
         stack.push(start);
 
+        // While there is a route to check
         while(!stack.isEmpty()) {
 
             City tmp = stack.peek();
@@ -146,12 +154,11 @@ public class Routes {
 
             currentRoute.push(currentCity);
 
-            // System.out.println("Stack " + stack);
-            // System.out.println("Path " + currentRoute);
-
+            // If this is our destination pop back to another city that had another route
             if (currentCity.getName().equals(destination)) {
 
-                System.out.println(currentRoute);
+                flightTimes.put(currentRoute.getTotalTime(), currentRoute.toString());
+                flightCosts.put(currentRoute.getTotalCost(), currentRoute.toString());
                 while (currentRoute.peek() != null && currentRoute.peek().getName().equals(stack.peek().getName())) {
 
                     stack.pop();
@@ -163,6 +170,7 @@ public class Routes {
 
             }
 
+            // Mark this city as visited and add adjacent cities that need to be searched
             visited.add(currentCity.getName());
 
             City adjacent = getAdjacent(currentCity.getName());
@@ -182,10 +190,33 @@ public class Routes {
 
         }
 
+        saveBest(flightTimes, flightCosts, outputPath);
+
         System.out.println("Backtracking from " + source + " to " + destination + " done.");
         return true;
 
     }
+
+    // Save best results from backtracking
+    private void saveBest(HashMap<String, Double> flightTimes, HashMap<String, Double> flightCosts, String outputPath) {
+
+        // Save top 3 times and costs to file
+        try {
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath));
+
+            // Top 3 times
+
+            writer.close();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
 
     // Finds
 

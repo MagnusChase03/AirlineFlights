@@ -58,6 +58,48 @@ public class Stack {
 
     public boolean isEmpty() {return top == null;}
 
+    public double getTotalTime() {
+
+        if (top == null) {
+
+            return 0;
+
+        }
+
+        double flightTime = 0.0;
+        City head = top;
+        while (head != null) {
+
+            flightTime += head.getFlightTime();
+            head = head.getNextCity();
+
+        }
+
+        return flightTime;
+
+    }
+
+    public double getTotalCost() {
+
+        if (top == null) {
+
+            return 0;
+
+        }
+
+        double flightCost = 0.0;
+        City head = top;
+        while (head != null) {
+
+            flightCost += head.getFlightCost();
+            head = head.getNextCity();
+
+        }
+
+        return flightCost;
+
+    }
+
     public String toString() {
 
         String result = "";
