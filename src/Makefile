@@ -8,3 +8,4 @@ build:
 
 clean:
 	rm Main.class
+	rm airlines/*.class

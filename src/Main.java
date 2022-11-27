@@ -78,6 +78,8 @@ public class Main {
 
         Routes airlineRoutes = createAirlineRoutes("routes.txt");
         airlineRoutes.getRoutes();
+        airlineRoutes.backtrack("Austin", "Dallas");
+        airlineRoutes.getRoutes();
 
     }
 

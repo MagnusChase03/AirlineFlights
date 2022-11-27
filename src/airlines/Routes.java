@@ -1,5 +1,7 @@
 package airlines;
 
+import java.util.HashSet;
+
 /*
 
 THE REASON IM ADDING AT END OF LINKED LIST IS TO CHECK FOR DUPLICATED AND PREVENT IT FROM HAPPENING,
@@ -38,7 +40,7 @@ public class Routes {
         City head = routes;
         while (head.getNextCity() != null) {
 
-            if (head.getName() == name) {
+            if (head.getName().equals(name)) {
 
                 System.out.println("City " + name + " already exits in adjacency list, did not add it.");
                 return false;
@@ -67,7 +69,7 @@ public class Routes {
 
         // Traverse routes until the source city
         City head = routes;
-        while (head != null && head.getName() != source) {
+        while (head != null && !head.getName().equals(source)) {
 
             head = head.getNextCity();
 
@@ -93,7 +95,7 @@ public class Routes {
         // Loop to end of adjacent cities to add route
         while (adjacent.getNextCity() != null) {
 
-            if (adjacent.getName() == destination) {
+            if (adjacent.getName().equals(destination)) {
 
                 System.out.println("Route from " + source + " to " + destination + " already exits in adjacency list, did not add it.");
                 return false;
@@ -113,6 +115,69 @@ public class Routes {
 
     }
 
+    // Backtracking
+    // Returns weither the backtrack was successful or not
+    public boolean backtrack(String source, String destination) {
+
+        spacer();
+        System.out.println("Backtracking from " + source + " to " + destination + "...");
+
+        // Make sure both cities exist
+        if (!(cityExist(source) && cityExist(destination))) {
+
+            System.out.println("Either the source or destination did not exist when backtracking.");
+            return false;
+
+        }
+
+        Stack stack = new Stack();
+        HashSet<String> visited = new HashSet<>();
+
+        City start = new City(source, 0, 0);
+        start.setAdjacentCity(getAdjacent(source));
+        stack.push(start);
+
+        while(!stack.isEmpty()) {
+
+            // Mark next city or pop up the stack
+            City currentCity = stack.pop();
+            if (currentCity.getName().equals(destination)) {
+
+                System.out.println("Found route.");
+                continue;
+
+            }
+
+            if (visited.contains(currentCity.getName())) {
+
+                continue;
+
+            }
+
+            visited.add(currentCity.getName());
+
+            // Try all adjacent paths
+            City adjacent = currentCity.getAdjacentCity();
+            while (adjacent != null) {
+
+                if (!visited.contains(adjacent.getName())) {
+
+                    City tmp = new City(adjacent.getName(), adjacent.getFlightTime(), adjacent.getFlightCost());
+                    tmp.setAdjacentCity(getAdjacent(adjacent.getName()));
+                    stack.push(tmp);
+
+                }
+                adjacent = adjacent.getNextCity();
+
+            }
+
+        }
+
+        System.out.println("Backtracking from " + source + " to " + destination + " done.");
+        return true;
+
+    }
+
     // Finds
 
     // Returns weither a city exist in the adjacency list
@@ -120,7 +185,7 @@ public class Routes {
 
         City head = routes;
 
-        while (head != null && head.getName() != name) {
+        while (head != null && !head.getName().equals(name)) {
 
             head = head.getNextCity();
 
@@ -135,7 +200,7 @@ public class Routes {
 
         City head = routes;
 
-        while (head != null && head.getName() != source) {
+        while (head != null && !head.getName().equals(source)) {
 
             head = head.getNextCity();
 
@@ -148,7 +213,7 @@ public class Routes {
         }
 
         City adjacent = head.getAdjacentCity();
-        while (adjacent != null && adjacent.getName() != destination) {
+        while (adjacent != null && !adjacent.getName().equals(destination)) {
 
             adjacent = adjacent.getNextCity();
 
@@ -159,6 +224,53 @@ public class Routes {
     }
 
     // Getters
+    private City getCity(String name) {
+
+        City head = routes;
+        while (head != null) {
+
+            if (head.getName().equals(name)) {
+
+                return head;
+
+            }
+            head = head.getNextCity();
+
+        }
+
+        if (head == null || !head.getName().equals(name)) {
+
+            return null;
+
+        }
+
+        return head;
+
+    }
+
+    private City getAdjacent(String name) {
+
+        City head = routes;
+        while (head != null) {
+
+            if (head.getName().equals(name)) {
+
+                return head.getAdjacentCity();
+
+            }
+            head = head.getNextCity();
+
+        }
+
+        if (head == null || !head.getName().equals(name)) {
+
+            return null;
+
+        }
+
+        return head.getAdjacentCity();
+
+    }
 
     // O(V)
     public void getCities() {
