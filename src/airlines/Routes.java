@@ -2,8 +2,6 @@ package airlines;
 
 import java.util.HashSet;
 import java.util.HashMap;
-import java.util.Collections;
-import java.util.Comparator
 import java.io.*;
 
 /*
@@ -157,8 +155,8 @@ public class Routes {
             // If this is our destination pop back to another city that had another route
             if (currentCity.getName().equals(destination)) {
 
-                flightTimes.put(currentRoute.getTotalTime(), currentRoute.toString());
-                flightCosts.put(currentRoute.getTotalCost(), currentRoute.toString());
+                flightTimes.put(currentRoute.toString(), currentRoute.getTotalTime());
+                flightCosts.put(currentRoute.toString(), currentRoute.getTotalCost());
                 while (currentRoute.peek() != null && currentRoute.peek().getName().equals(stack.peek().getName())) {
 
                     stack.pop();
@@ -203,9 +201,52 @@ public class Routes {
         // Save top 3 times and costs to file
         try {
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath, true));
 
             // Top 3 times
+            for (int i = 0; i < 3; i ++) {
+
+                double min = Double.MAX_VALUE;
+                String minKey = "";
+                for (String key : flightTimes.keySet()) {
+
+                    if (flightTimes.get(key) < min) {
+
+                        min = flightTimes.get(key);
+                        minKey = key;
+
+                    }
+
+                }
+
+                writer.write(minKey + " " + flightTimes.get(minKey) + " minutes");
+                writer.newLine();
+
+                flightTimes.remove(minKey);
+
+            }
+
+            for (int i = 0; i < 3; i++) {
+
+                double min = Double.MAX_VALUE;
+                String minKey = "";
+                for (String key : flightCosts.keySet()) {
+
+                    if (flightCosts.get(key) < min) {
+
+                        min = flightCosts.get(key);
+                        minKey = key;
+
+                    }
+
+                }
+
+                writer.write(minKey + " $" + flightCosts.get(minKey));
+                writer.newLine();
+
+                flightCosts.remove(minKey);
+
+            }
 
             writer.close();
 

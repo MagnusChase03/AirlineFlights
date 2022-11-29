@@ -1,0 +1,6 @@
+Dallas <- Austin <-  60.0 minutes
+Dallas <- Huston <- Austin <-  60.0 minutes
+Dallas <- Huston <- ElPaso <- Austin <-  90.0 minutes
+Dallas <- Austin <-  $200.0
+Dallas <- Huston <- Austin <-  $200.0
+Dallas <- Huston <- ElPaso <- Austin <-  $300.0
