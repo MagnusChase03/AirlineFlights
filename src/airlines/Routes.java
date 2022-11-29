@@ -119,7 +119,7 @@ public class Routes {
 
     // Backtracking
     // Returns weither the backtrack was successful or not
-    public boolean backtrack(String source, String destination, String outputPath) {
+    public boolean backtrack(String source, String destination, String method, String outputPath) {
 
         spacer();
         System.out.println("Backtracking from " + source + " to " + destination + "...");
@@ -136,8 +136,7 @@ public class Routes {
         Stack currentRoute = new Stack();
         HashSet<String> visited = new HashSet<>();
 
-        HashMap<String, Double> flightTimes = new HashMap<>();
-        HashMap<String, Double> flightCosts = new HashMap<>();
+        HashMap<String, Double> resultVector = new HashMap<>();
 
         City start = new City(source, 0, 0);
         start.setAdjacentCity(getAdjacent(source));
@@ -155,8 +154,16 @@ public class Routes {
             // If this is our destination pop back to another city that had another route
             if (currentCity.getName().equals(destination)) {
 
-                flightTimes.put(currentRoute.toString(), currentRoute.getTotalTime());
-                flightCosts.put(currentRoute.toString(), currentRoute.getTotalCost());
+                if (method.equals("T")) {
+
+                    resultVector.put(currentRoute.toString(), currentRoute.getTotalTime());
+
+                } else {
+
+                    resultVector.put(currentRoute.toString(), currentRoute.getTotalCost());
+
+                }         
+
                 while (currentRoute.peek() != null && currentRoute.peek().getName().equals(stack.peek().getName())) {
 
                     stack.pop();
@@ -188,7 +195,7 @@ public class Routes {
 
         }
 
-        saveBest(flightTimes, flightCosts, outputPath);
+        saveBest(resultVector, method, outputPath);
 
         System.out.println("Backtracking from " + source + " to " + destination + " done.");
         return true;
@@ -196,7 +203,7 @@ public class Routes {
     }
 
     // Save best results from backtracking
-    private void saveBest(HashMap<String, Double> flightTimes, HashMap<String, Double> flightCosts, String outputPath) {
+    private void saveBest(HashMap<String, Double> resultVector, String method, String outputPath) {
 
         // Save top 3 times and costs to file
         try {
@@ -208,43 +215,29 @@ public class Routes {
 
                 double min = Double.MAX_VALUE;
                 String minKey = "";
-                for (String key : flightTimes.keySet()) {
+                for (String key : resultVector.keySet()) {
 
-                    if (flightTimes.get(key) < min) {
+                    if (resultVector.get(key) < min) {
 
-                        min = flightTimes.get(key);
+                        min = resultVector.get(key);
                         minKey = key;
 
                     }
 
                 }
 
-                writer.write(minKey + " " + flightTimes.get(minKey) + " minutes");
-                writer.newLine();
+                if (method.equals("T")) {
 
-                flightTimes.remove(minKey);
+                    writer.write(minKey + " " + resultVector.get(minKey) + " minutes");
 
-            }
+                } else {
 
-            for (int i = 0; i < 3; i++) {
-
-                double min = Double.MAX_VALUE;
-                String minKey = "";
-                for (String key : flightCosts.keySet()) {
-
-                    if (flightCosts.get(key) < min) {
-
-                        min = flightCosts.get(key);
-                        minKey = key;
-
-                    }
+                    writer.write(minKey + " $" + resultVector.get(minKey));
 
                 }
 
-                writer.write(minKey + " $" + flightCosts.get(minKey));
                 writer.newLine();
-
-                flightCosts.remove(minKey);
+                resultVector.remove(minKey);
 
             }
 

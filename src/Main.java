@@ -74,12 +74,52 @@ public class Main {
 
     }
 
+    // Backtracks using created graph to print best routes into the output file
+    private static void findBestRoutes(Routes airlineRoutes, String filepath, String outputFilePath) {
+
+        try {
+
+            BufferedReader read = new BufferedReader(new FileReader(filepath));
+
+            // Skip first line
+            read.readLine();
+
+            // Backtrack each line given
+            String line = "";
+            while ((line = read.readLine()) != null) {
+
+                String[] data = line.split("\\|");
+                if (data.length < 3) {
+
+                    System.out.println("Backtracking routes in incorrect format, " + line);
+                    return;
+
+                }
+
+                airlineRoutes.backtrack(data[0], data[1], data[2], outputFilePath);
+
+            }
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
     public static void main(String[] args) {
 
-        Routes airlineRoutes = createAirlineRoutes("routes.txt");
+        if (args.length < 3) {
+
+            System.out.println("Usage: java Main.java [Graph Input File] [Routes File] [Output File]");
+            return;
+
+        }
+
+        Routes airlineRoutes = createAirlineRoutes(args[0]);
         airlineRoutes.getRoutes();
-        airlineRoutes.backtrack("Austin", "Dallas", "./test.dat");
-        airlineRoutes.getRoutes();
+        findBestRoutes(airlineRoutes, args[1], args[2]);
 
     }
 
