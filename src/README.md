@@ -92,9 +92,9 @@ Distributed under the GPL License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-[issues-shield]: https://img.shields.io/github/issues/MagnusChase03/DiscordClone?style=for-the-badge
-[forks-shield]: https://img.shields.io/github/forks/MagnusChase03/DiscordClone?style=for-the-badge
-[stars-shield]: https://img.shields.io/github/stars/MagnusChase03/DiscordClone?style=for-the-badge
-[license-shield]: https://img.shields.io/github/license/magnuschase03/DiscordClone?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/MagnusChase03/AirlineFlights?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/MagnusChase03/AirlineFlights?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/MagnusChase03/AirlineFlights?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/magnuschase03/AirlineFlights?style=for-the-badge
 [java-shield]: https://img.shields.io/badge/Java-20232A?style=for-the-badge&logo=coffeescript
 
