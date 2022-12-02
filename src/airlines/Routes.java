@@ -299,7 +299,7 @@ public class Routes {
 
         }
 
-        saveBest(flightTimes, flightCosts, method, outputPath);
+        saveBest(source, destination, flightTimes, flightCosts, method, outputPath);
 
         System.out.println("Backtracking from " + source + " to " + destination + " done.");
 
@@ -308,7 +308,7 @@ public class Routes {
     }
 
     // Save best results from backtracking
-    private void saveBest(HashMap<String, Double> flightTimes, HashMap<String, Double> flightCosts, String method, String outputPath) {
+    private void saveBest(String source, String destination, HashMap<String, Double> flightTimes, HashMap<String, Double> flightCosts, String method, String outputPath) {
 
         // Save top 3 times and costs to file
         try {
@@ -316,7 +316,7 @@ public class Routes {
             BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath, true));
 
             // Top 3 times
-            writer.write("Flight (" + method + ")");
+            writer.write("Flight " + source + "->" + destination + " (" + method + ")");
             writer.newLine();
 
             if (method.equals("T")) {

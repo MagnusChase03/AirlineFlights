@@ -1,12 +1,12 @@
-Flight (T)
+Flight Austin->Fort (T)
 Path 0: Fort <- Dallas <- Austin <-  90.0 minutes $300.0
 Path 1: Fort <- RoundRock <- Huston <- Austin <-  90.0 minutes $300.0
 Path 2: Fort <- Dallas <- Huston <- Austin <-  90.0 minutes $300.0
-Flight (C)
+Flight Austin->Dallas (C)
 Path 0: Dallas <- Austin <-  60.0 minutes $200.0
 Path 1: Dallas <- Huston <- Austin <-  60.0 minutes $200.0
 Path 2: Dallas <- SanAntonio <- Huston <- Austin <-  90.0 minutes $300.0
-Flight (T)
+Flight Austin->Dallas (T)
 Path 0: Dallas <- Austin <-  60.0 minutes $200.0
 Path 1: Dallas <- Huston <- Austin <-  60.0 minutes $200.0
 Path 2: Dallas <- SanAntonio <- Huston <- Austin <-  90.0 minutes $300.0
