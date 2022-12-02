@@ -121,10 +121,104 @@ public class Routes {
     // Returns weither the backtrack was successful or not
     public boolean backtrack(String source, String destination, String method, String outputPath) {
 
-        spacer();
-        System.out.println("Backtracking from " + source + " to " + destination + "...");
+        // spacer();
+        // System.out.println("Backtracking from " + source + " to " + destination + "...");
 
-        // Make sure both cities exist
+        // // Make sure both cities exist
+        // if (!(cityExist(source) && cityExist(destination))) {
+
+        //     System.out.println("Either the source or destination did not exist when backtracking.");
+        //     return false;
+
+        // }
+
+        // Stack stack = new Stack();
+        // Stack currentRoute = new Stack();
+        // HashSet<String> visited = new HashSet<>();
+
+        // HashMap<String, Double> resultVector = new HashMap<>();
+
+        // City start = new City(source, 0, 0);
+        // start.setAdjacentCity(getAdjacent(source));
+        // stack.push(start);
+
+        // // While there is a route to check
+        // while(!stack.isEmpty()) {
+
+        //     City tmp = stack.peek();
+        //     if (visited.contains(tmp.getName())) {
+
+        //         if (currentRoute.peek() != null && currentRoute.peek().getName().equals(stack.peek().getName())) {
+                    
+        //             currentRoute.pop();
+
+        //         }
+
+        //         stack.pop();
+
+        //         continue;
+
+        //     }
+
+        //     City currentCity = new City(tmp.getName(), tmp.getFlightTime(), tmp.getFlightCost());
+        //     currentCity.setAdjacentCity(getAdjacent(currentCity.getName()));
+
+        //     currentRoute.push(currentCity);
+        //     spacer();
+        //     System.out.println(stack);
+        //     System.out.println(currentRoute);
+
+        //     // If this is our destination pop back to another city that had another route
+        //     if (currentCity.getName().equals(destination)) {
+
+        //         System.out.println("^^^^^^^^");
+        //         if (method.equals("T")) {
+
+        //             resultVector.put(currentRoute.toString(), currentRoute.getTotalTime());
+
+        //         } else {
+
+        //             resultVector.put(currentRoute.toString(), currentRoute.getTotalCost());
+
+        //         }         
+
+        //         while (currentRoute.peek() != null && currentRoute.peek().getName().equals(stack.peek().getName())) {
+
+        //             System.out.println("SECOND POP " + stack.peek().getName() + " and " + currentRoute.peek().getName());
+        //             stack.pop();
+        //             currentRoute.pop();
+
+        //         }
+
+        //         continue;
+
+        //     }
+
+        //     // Mark this city as visited and add adjacent cities that need to be searched
+        //     visited.add(currentCity.getName());
+
+        //     City adjacent = getAdjacent(currentCity.getName());
+        //     while (adjacent != null) {
+
+        //         if (!visited.contains(adjacent.getName())) {
+
+        //             City tmp2 = new City(adjacent.getName(), adjacent.getFlightTime(), adjacent.getFlightCost());
+        //             tmp2.setAdjacentCity(getAdjacent(tmp2.getName()));
+        //             stack.push(tmp2);
+
+        //         }
+
+        //         adjacent = adjacent.getNextCity();
+
+        //     }
+
+        // }
+
+        // saveBest(resultVector, method, outputPath);
+
+        // System.out.println("Backtracking from " + source + " to " + destination + " done.");
+
+        spacer();
         if (!(cityExist(source) && cityExist(destination))) {
 
             System.out.println("Either the source or destination did not exist when backtracking.");
@@ -135,25 +229,24 @@ public class Routes {
         Stack stack = new Stack();
         Stack currentRoute = new Stack();
         HashSet<String> visited = new HashSet<>();
-
         HashMap<String, Double> resultVector = new HashMap<>();
 
         City start = new City(source, 0, 0);
         start.setAdjacentCity(getAdjacent(source));
         stack.push(start);
 
-        // While there is a route to check
-        while(!stack.isEmpty()) {
+        while (!stack.isEmpty()) {
 
             City tmp = stack.peek();
+
             City currentCity = new City(tmp.getName(), tmp.getFlightTime(), tmp.getFlightCost());
             currentCity.setAdjacentCity(getAdjacent(currentCity.getName()));
 
             currentRoute.push(currentCity);
 
-            // If this is our destination pop back to another city that had another route
             if (currentCity.getName().equals(destination)) {
 
+                System.out.println(currentRoute);
                 if (method.equals("T")) {
 
                     resultVector.put(currentRoute.toString(), currentRoute.getTotalTime());
@@ -162,12 +255,14 @@ public class Routes {
 
                     resultVector.put(currentRoute.toString(), currentRoute.getTotalCost());
 
-                }         
-
+                }
+                
                 while (currentRoute.peek() != null && currentRoute.peek().getName().equals(stack.peek().getName())) {
 
+                    visited.remove(stack.peek().getName());
                     stack.pop();
                     currentRoute.pop();
+                    
 
                 }
 
@@ -175,9 +270,9 @@ public class Routes {
 
             }
 
-            // Mark this city as visited and add adjacent cities that need to be searched
             visited.add(currentCity.getName());
 
+            int countAdded = 0;
             City adjacent = getAdjacent(currentCity.getName());
             while (adjacent != null) {
 
@@ -186,10 +281,24 @@ public class Routes {
                     City tmp2 = new City(adjacent.getName(), adjacent.getFlightTime(), adjacent.getFlightCost());
                     tmp2.setAdjacentCity(getAdjacent(tmp2.getName()));
                     stack.push(tmp2);
+                    countAdded += 1;
 
                 }
 
                 adjacent = adjacent.getNextCity();
+
+            }
+
+            if (countAdded == 0) {
+                
+                while (currentRoute.peek() != null && currentRoute.peek().getName().equals(stack.peek().getName())) {
+
+                    visited.remove(stack.peek().getName());
+                    stack.pop();
+                    currentRoute.pop();
+                    
+
+                }
 
             }
 
@@ -198,6 +307,7 @@ public class Routes {
         saveBest(resultVector, method, outputPath);
 
         System.out.println("Backtracking from " + source + " to " + destination + " done.");
+
         return true;
 
     }
@@ -211,6 +321,8 @@ public class Routes {
             BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath, true));
 
             // Top 3 times
+            writer.write("Flight (" + method + ")");
+            writer.newLine();
             for (int i = 0; i < 3; i ++) {
 
                 double min = Double.MAX_VALUE;
@@ -226,18 +338,25 @@ public class Routes {
 
                 }
 
-                if (method.equals("T")) {
 
-                    writer.write(minKey + " " + resultVector.get(minKey) + " minutes");
+                if (!minKey.equals("")) {
 
-                } else {
+                    System.out.println("Saving " + minKey + " " + min);
 
-                    writer.write(minKey + " $" + resultVector.get(minKey));
+                    if (method.equals("T")) {
+
+                        writer.write("Path " + i + ": " + minKey + " " + resultVector.get(minKey) + " minutes");
+
+                    } else {
+
+                        writer.write("Path " + i + ": " + minKey + " $" + resultVector.get(minKey));
+
+                    }
+
+                    writer.newLine();
+                    resultVector.remove(minKey);
 
                 }
-
-                writer.newLine();
-                resultVector.remove(minKey);
 
             }
 

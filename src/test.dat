@@ -1,3 +1,8 @@
-Dallas <- Austin <-  $200.0
-Dallas <- Huston <- Austin <-  $200.0
-Dallas <- Huston <- ElPaso <- Austin <-  $300.0
+Flight (T)
+Path 0: Fort <- Dallas <- Austin <-  90.0 minutes
+Path 1: Fort <- RoundRock <- Huston <- Austin <-  90.0 minutes
+Path 2: Fort <- Dallas <- Huston <- Austin <-  90.0 minutes
+Flight (C)
+Path 0: Dallas <- Austin <-  $200.0
+Path 1: Dallas <- Huston <- Austin <-  $200.0
+Path 2: Dallas <- SanAntonio <- Huston <- Austin <-  $300.0
