@@ -66,7 +66,7 @@ Build the project with Makefile or manually
 
 Or,
 
-2) `javac javac Main.java airlines/*.java`
+2) `javac Main.java airlines/*.java`
 
 ## Usage
 
