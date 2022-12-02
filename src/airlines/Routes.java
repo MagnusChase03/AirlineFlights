@@ -229,7 +229,8 @@ public class Routes {
         Stack stack = new Stack();
         Stack currentRoute = new Stack();
         HashSet<String> visited = new HashSet<>();
-        HashMap<String, Double> resultVector = new HashMap<>();
+        HashMap<String, Double> flightTimes = new HashMap<>();
+        HashMap<String, Double> flightCosts = new HashMap<>();
 
         City start = new City(source, 0, 0);
         start.setAdjacentCity(getAdjacent(source));
@@ -247,15 +248,9 @@ public class Routes {
             if (currentCity.getName().equals(destination)) {
 
                 System.out.println(currentRoute);
-                if (method.equals("T")) {
 
-                    resultVector.put(currentRoute.toString(), currentRoute.getTotalTime());
-
-                } else {
-
-                    resultVector.put(currentRoute.toString(), currentRoute.getTotalCost());
-
-                }
+                flightTimes.put(currentRoute.toString(), currentRoute.getTotalTime());
+                flightCosts.put(currentRoute.toString(), currentRoute.getTotalCost());
                 
                 while (currentRoute.peek() != null && currentRoute.peek().getName().equals(stack.peek().getName())) {
 
@@ -304,7 +299,7 @@ public class Routes {
 
         }
 
-        saveBest(resultVector, method, outputPath);
+        saveBest(flightTimes, flightCosts, method, outputPath);
 
         System.out.println("Backtracking from " + source + " to " + destination + " done.");
 
@@ -313,7 +308,7 @@ public class Routes {
     }
 
     // Save best results from backtracking
-    private void saveBest(HashMap<String, Double> resultVector, String method, String outputPath) {
+    private void saveBest(HashMap<String, Double> flightTimes, HashMap<String, Double> flightCosts, String method, String outputPath) {
 
         // Save top 3 times and costs to file
         try {
@@ -323,44 +318,71 @@ public class Routes {
             // Top 3 times
             writer.write("Flight (" + method + ")");
             writer.newLine();
-            for (int i = 0; i < 3; i ++) {
 
-                double min = Double.MAX_VALUE;
-                String minKey = "";
-                for (String key : resultVector.keySet()) {
+            if (method.equals("T")) {
 
-                    if (resultVector.get(key) < min) {
+                for (int i = 0; i < 3; i ++) {
 
-                        min = resultVector.get(key);
-                        minKey = key;
+                    double min = Double.MAX_VALUE;
+                    String minKey = "";
+                    for (String key : flightTimes.keySet()) {
+
+                        if (flightTimes.get(key) < min) {
+
+                            min = flightTimes.get(key);
+                            minKey = key;
+
+                        }
+
+                    }
+
+
+                    if (!minKey.equals("")) {
+
+                        System.out.println("Saving " + minKey + " " + min);
+
+                        writer.write("Path " + i + ": " + minKey + " " + flightTimes.get(minKey) + " minutes" + " $" + flightCosts.get(minKey));
+                        writer.newLine();
+                        flightTimes.remove(minKey);
 
                     }
 
                 }
 
+            } else {
 
-                if (!minKey.equals("")) {
+                for (int i = 0; i < 3; i ++) {
 
-                    System.out.println("Saving " + minKey + " " + min);
+                    double min = Double.MAX_VALUE;
+                    String minKey = "";
+                    for (String key : flightCosts.keySet()) {
 
-                    if (method.equals("T")) {
+                        if (flightCosts.get(key) < min) {
 
-                        writer.write("Path " + i + ": " + minKey + " " + resultVector.get(minKey) + " minutes");
+                            min = flightCosts.get(key);
+                            minKey = key;
 
-                    } else {
-
-                        writer.write("Path " + i + ": " + minKey + " $" + resultVector.get(minKey));
+                        }
 
                     }
 
-                    writer.newLine();
-                    resultVector.remove(minKey);
+
+                    if (!minKey.equals("")) {
+
+                        System.out.println("Saving " + minKey + " " + min);
+
+                        writer.write("Path " + i + ": " + minKey + " " + flightTimes.get(minKey) + " minutes" + " $" + flightCosts.get(minKey));
+                        writer.newLine();
+                        flightCosts.remove(minKey);
+
+                    }
 
                 }
 
             }
 
             writer.close();
+            
 
         } catch (IOException e) {
 

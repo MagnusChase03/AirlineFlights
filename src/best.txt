@@ -1,3 +1,4 @@
 3
 Austin|Fort|T
 Austin|Dallas|C
+Austin|Dallas|T
